@@ -21,4 +21,9 @@ class SuperChargedByParser
             $this->{$key}=$value;
         }
     }
+
+    public function isValidCacheSetter()
+    {
+        return (count($this->cache)===2 && is_numeric($this->cache['ttl']) && strlen($this->cache['key_prefix'])>5);
+    }
 }

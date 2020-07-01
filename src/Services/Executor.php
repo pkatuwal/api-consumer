@@ -2,6 +2,7 @@
 
 namespace Pramod\ApiConsumer\Services;
 
+use Illuminate\Support\Facades\Cache;
 use Pramod\ApiConsumer\ApiConsumer;
 use Pramod\ApiConsumer\Traits\ConsumerHttpClient;
 
@@ -24,8 +25,20 @@ class Executor
     {
         $this->apiConsumer = $apiConsumer;
         $this->finalRenderPayload();
-        $this->receivedContents=$this->performRequest();
+        $this->receivedContents=$this->getSuperChargedData($this->performRequest());
         return $this;
+    }
+
+    public function getSuperChargedData($executedRecords)
+    {
+        if ($this->apiConsumer->superChargedByPayload->isValidCacheSetter()) {
+            $cacheName=$this->apiConsumer->superChargedByPayload->cache['key_prefix'];
+            if (!Cache::get($cacheName)) {
+                Cache::put($cacheName, $executedRecords, $this->apiConsumer->superChargedByPayload->cache['ttl']);
+                return $executedRecords;
+            }
+        }
+        return $executedRecords;
     }
 
     public function getReceivedContents()

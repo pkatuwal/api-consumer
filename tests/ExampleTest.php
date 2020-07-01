@@ -83,10 +83,9 @@ class ExampleTest extends TestCase
                 ->superChargedBy([
                     'cache'=>[
                         'ttl'=>20,
-                        'key_prefix'=>'documents'
+                        'key_prefix'=>'customer_pramodk_home'
                     ]
                 ]);
-        dd($data->toCollection());
-        return $this->assertContains('documents', $data->superChargedByPayload->cache, 'Does not contains');
+        return $this->assertContains('mobile_secondary', $data->toCollection(), 'Does not contains');
     }
 }

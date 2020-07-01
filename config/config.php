@@ -6,7 +6,7 @@
 return [
     'default'=>[
         'timeout'=>10,
-        'ssl_verification'=>true
+        'ssl_verification'=>true,
     ],
     'consumer' => [
         'ebill' => [
