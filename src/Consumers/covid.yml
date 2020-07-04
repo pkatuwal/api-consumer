@@ -1,0 +1,6 @@
+summary:
+    uri: summary
+    story: this is summary uri
+countries:
+    uri: countriesRoute
+    story: All countries Route
