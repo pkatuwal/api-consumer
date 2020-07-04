@@ -2,6 +2,7 @@
 namespace Pramod\ApiConsumer\Parser;
 
 use InvalidArgumentException;
+use Symfony\Component\Yaml\Yaml;
 
 class ConsumerParser
 {
@@ -43,6 +44,25 @@ class ConsumerParser
     public function getSslVerify()
     {
         return $this->consumerSettings['ssl_verification']??config('api-consumer.default.ssl_verification');
+    }
+
+    public function loadCustomConsumerSettings()
+    {
+        if (!empty($this->getCustomConsumer())) {
+            foreach ($this->getCustomConsumer() as $row) {
+                return Yaml::parseFile(base_path('app').'/'.$row.'.yml');
+            }
+        }
+    }
+
+    public function getRegisteredConsumers()
+    {
+        return $this->loadCustomConsumerSettings();
+    }
+
+    public function getCustomConsumer()
+    {
+        return $this->consumerSettings['custom_consumer']??[];
     }
 
     public function getConsumerRequestSetting()
