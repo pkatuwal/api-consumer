@@ -18,19 +18,29 @@ class ApiConsumer
         return $this;
     }
 
-    public function via($requestedUri, bool $activeUserDefinedMethod = false)
+    public function via($requestedUri, $activeUserDefinedMethod = false)
     {
         $this->viaPayload=new ViaParser(
             $requestedUri,
             $activeUserDefinedMethod
                 ?
-                $this->consumePayload->getRegisteredConsumers()
+                $this->getViaSecondParams($activeUserDefinedMethod)
                 :
                 $activeUserDefinedMethod
         );
         return $this;
     }
-    
+    protected function getViaSecondParams($activeUserDefinedMethod)
+    {
+        return $activeUserDefinedMethod
+                ?
+                [
+                    'payload'=>$this->consumePayload->getRegisteredConsumers(),
+                    'original'=>$activeUserDefinedMethod
+                ]
+                :
+                $activeUserDefinedMethod;
+    }
 
     public function with(array $headersPayload)
     {
