@@ -20,9 +20,17 @@ class ApiConsumer
 
     public function via($requestedUri, bool $activeUserDefinedMethod = false)
     {
-        $this->viaPayload=new ViaParser($requestedUri, $activeUserDefinedMethod);
+        $this->viaPayload=new ViaParser(
+            $requestedUri,
+            $activeUserDefinedMethod
+                ?
+                $this->consumePayload->getRegisteredConsumers()
+                :
+                $activeUserDefinedMethod
+        );
         return $this;
     }
+    
 
     public function with(array $headersPayload)
     {
