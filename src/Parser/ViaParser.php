@@ -29,7 +29,25 @@ class ViaParser
     }
     protected function getParsedUri()
     {
-        return $this->activeUserDefinedMethod[$this->requestedUri]['uri'];
+        if (is_array($this->activeUserDefinedMethod['original'])) {
+            return str_replace(
+                $this->replaceArrayKeyByBraces(),
+                array_values($this->activeUserDefinedMethod['original']),
+                $this->activeUserDefinedMethod['payload'][$this->requestedUri]['uri']
+            );
+        }
+        if ($this->activeUserDefinedMethod['original']===true) {
+            return $this->activeUserDefinedMethod['payload'][$this->requestedUri]['uri'];
+        }
+    }
+
+    protected function replaceArrayKeyByBraces()
+    {
+        $replaceNewArray=[];
+        foreach (array_keys($this->activeUserDefinedMethod['original']) as $key => $value) {
+            $replaceNewArray[]='{'.$value.'}';
+        }
+        return $replaceNewArray;
     }
 
     public function getRequestedUri()
