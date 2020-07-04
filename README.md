@@ -60,6 +60,73 @@ Api::consume('ebill')
     ->toArray();
 ```
 
+## Define your custom settings[yml]
+You can create your own config to manage and get proper visualization of endpoint used in your app.
+1. Create Folder inside App eg, app/Consumers/covid.yml
+    or you can create your own folder where you have to  separate **yml** as per your service name. 
+
+2. Sample For yaml
+```
+filename:app/Consumers/covid.yml
+```
+```yaml
+summary:
+    uri: summary
+    story: this is summary uri
+countries:
+    uri: countriesRoute
+    story: All countries Route
+```
+
+    Where **uri** must be your request path and story for short descriptions or uri.
+
+
+
+3.  Final Request
+    
+    Sample Code
+    ```php
+    //add second param on your via method
+
+    //for static uri eg, canvasenx.com.np/users
+    return Api::consume('covid19api')
+        ->via('summary', true)
+        ->toCollection();
+
+    //for dynamic uri you must add your uri payload with value as
+    return Api::consume('covid19api')
+        ->via('countryDayOneRoute', [
+            'country'=>'nepal'
+        ])
+        ->toCollection();
+        
+    ```
+    Note: your configuration should look like this
+    ```yml
+    summary:
+        uri: summary
+        story: this is summary uri
+    countries:
+        uri: countriesRoute
+        story: All countries Route
+    countryDayOneRoute:
+        uri: dayone/country/{country}
+        story: Returns all cases by case type for a country from the first recorded case. Country must be the country_slug from /countries. Cases must be one of confirmed, recovered, deaths"
+    ```
+
+    Note: Your Dynamic uri must be covered with curly brackets {}.
+4. Final Words for **Via** injections
+
+    Adding **true** or **array** on second parameters will observe your custom class which is defined in config file as **custom_consumer** array file
+    ```php
+    'covid19api'=>[
+        'baseUri'=>'https://api.covid19api.com/',
+        'custom_consumer' => [
+            'Consumers/covid'
+        ],
+        'timeout'=>10
+    ]
+    ``` 
 #### Descriptions
 1. **consume**
     
@@ -70,7 +137,7 @@ Api::consume('ebill')
     This method is used to point service end or function name written in service Namespace
     +  Available Method
         +   first parameter: <i>Api endpoint or uri</i>
-        +   ![Test](test.png) Second parameter: <i>if second param is **true**, first param must be method name defined inside your services Folder's class</i>
+        +   Second parameter: <i>if second param is **true**, first param must be method name defined inside your services Folder's class</i>
 
 3.  **with**
 
