@@ -3,6 +3,7 @@
 namespace Pramod\ApiConsumer;
 
 use Illuminate\Support\ServiceProvider;
+use Pramod\ApiConsumer\Middleware\LogRequestMiddleware;
 
 class ApiConsumerServiceProvider extends ServiceProvider
 {
@@ -40,7 +41,8 @@ class ApiConsumerServiceProvider extends ServiceProvider
             ], 'lang');*/
 
             // Registering package commands.
-            // $this->commands([]);
+            $this->commands([
+            ]);
         }
     }
 
@@ -56,5 +58,12 @@ class ApiConsumerServiceProvider extends ServiceProvider
         $this->app->singleton('api', function () {
             return new ApiConsumer;
         });
+        $this->registerMiddlewareForSingleTon();
     }
+
+    protected function registerMiddlewareForSingleTon()
+    {
+        $this->app->singleton(LogRequestMiddleware::class);
+    }
+
 }
