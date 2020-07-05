@@ -29,7 +29,10 @@
     "autoload": {
         "psr-4": {
             "Pramod\\ApiConsumer\\": "src"
-        }
+        },
+        "files": [
+            "src/helpers/helpers.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
