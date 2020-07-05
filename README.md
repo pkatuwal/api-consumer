@@ -127,6 +127,16 @@ countries:
         'timeout'=>10
     ]
     ``` 
+
+# Monitor Your Request Log
+
+You can monitor external call request, response and execution time which is stored as json format in your default log. **To activate log monitor** you should enable middleware on your application
+
+```php
+$app->middleware([
+    Pramod\ApiConsumer\Middleware\LogRequestMiddleware::class
+]);
+```
 #### Descriptions
 1. **consume**
     
