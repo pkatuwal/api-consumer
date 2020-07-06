@@ -8,6 +8,7 @@ use Pramod\ApiConsumer\Parser\SuperChargedByParser;
 use Pramod\ApiConsumer\Parser\ViaParser;
 use Pramod\ApiConsumer\Parser\WithParser;
 use Pramod\ApiConsumer\Services\Executor;
+use ReflectionMethod;
 
 class ApiConsumer
 {
@@ -83,5 +84,10 @@ class ApiConsumer
         if (method_exists($this, $method)) {
             return call_user_func_array(array($this, $method), $arguments);
         }
+    }
+
+    public function __toString()
+    {
+        return $this->toCollection()->toJson();
     }
 }
