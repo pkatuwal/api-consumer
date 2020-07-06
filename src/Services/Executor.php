@@ -17,6 +17,7 @@ class Executor
     public $headers;
     public $timeout;
     public $sslVerify;
+    public $graphQl;
     protected $receivedContents;
 
     protected $apiConsumer;
@@ -47,13 +48,18 @@ class Executor
     }
     protected function finalRenderPayload()
     {
+        
         $this->baseUri = $this->apiConsumer->consumePayload->getBaseUri();
         $this->requestUri = $this->getRequestedUri();
         $this->formParams = $this->apiConsumer->withPayload->payload??null;
+        $this->graphQl=$this->apiConsumer->withPayload->graphQl??null;
         $this->method = $this->getMethod();
         $this->headers = $this->getAuthorizationHeaders();
         $this->timeout=$this->apiConsumer->consumePayload->getTimeOut();
         $this->sslVerify=$this->apiConsumer->consumePayload->getSslVerify();
+
+        //replace Headers global in case of graphql
+        $this->replaceHeadersForGraphQl();
     }
 
     protected function getRequestedUri()
@@ -69,6 +75,9 @@ class Executor
 
     protected function getMethod()
     {
+        if (isset($this->graphQl) && $this->graphQl!==null) {
+            return 'POST';
+        }
         return $this->apiConsumer->withPayload->method??config('api-consumer.default.method');
     }
 
@@ -81,6 +90,15 @@ class Executor
         }
         return $this->apiConsumer->withPayload->headers??[];
     }
+
+    protected function replaceHeadersForGraphQl()
+    {
+        if (isset($this->graphQl) && $this->graphQl!==null) {
+            $this->headers['Accept']='application/json';
+            $this->headers['Content-Type']='application/json';
+        }
+    }
+    
 
     protected function getSslVerify()
     {
