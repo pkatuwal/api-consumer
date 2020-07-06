@@ -152,9 +152,9 @@ return [
     ],
     'consumer' => [
         'graphqlTest'=>[
-            'baseUri'=>'https://messaging-dev.wlink.com.np/',
+            'baseUri'=>'https://countries.trevorblades.com/',
             'timeout'=>60,
-            'ssl_verification'=>false //my default its true
+            // 'ssl_verification'=>false //my default its true
         ]
     ]
 ];
@@ -172,12 +172,23 @@ return Api::consume('graphqlTest')
             ->with([
                 'graphQl'=>[
                     'query'=>'query{
-                        system{
-                            maintainers
-                        }
-                        }'
+                            continents{
+                              code
+                              name
+                              countries{
+                                code
+                                name
+                                native
+                              }
+                            }
+                          }'
                     ]
             ])
+```
+
+<i>List of all public graphql Api to test </l>
+```
+https://github.com/APIs-guru/graphql-apis
 ```
 #### Descriptions
 1. **consume**
