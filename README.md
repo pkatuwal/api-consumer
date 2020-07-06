@@ -137,6 +137,48 @@ $app->middleware([
     Pramod\ApiConsumer\Middleware\LogRequestMiddleware::class
 ]);
 ```
+
+# Call Your **Graphql** Api
+
+1. Add Your Service setting on <<**config/api-consumer.php**>>
+```php
+<?php
+
+return [
+    'default'=>[
+        'timeout'=>10,
+        'ssl_verification'=>true,
+        'method'=>"GET"
+    ],
+    'consumer' => [
+        'graphqlTest'=>[
+            'baseUri'=>'https://messaging-dev.wlink.com.np/',
+            'timeout'=>60,
+            'ssl_verification'=>false //my default its true
+        ]
+    ]
+];
+
+```
+
+2.  Add your endpoint on your request class
+    + In case of **graphQl** key inside **with** auto set **Accept** and **Content-Type** headers as **application/json**
+    + Method is set as **POST**
+    + Need to pass your **graphql** query in **query** key
+```php
+return Api::consume('graphqlTest')
+            ->via('fcm/graphql')
+            ->with([
+                'graphQl'=>[
+                    'query'=>'query{
+                        system{
+                            maintainers
+                        }
+                        }'
+                    ]
+            ])
+            ->toCollection();
+```
 #### Descriptions
 1. **consume**
     
