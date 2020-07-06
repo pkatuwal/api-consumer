@@ -165,6 +165,7 @@ return [
     + In case of **graphQl** key inside **with** auto set **Accept** and **Content-Type** headers as **application/json**
     + Method is set as **POST**
     + Need to pass your **graphql** query in **query** key
+    + Default It call **toJson()**
 ```php
 return Api::consume('graphqlTest')
             ->via('fcm/graphql')
@@ -177,7 +178,6 @@ return Api::consume('graphqlTest')
                         }'
                     ]
             ])
-            ->toCollection();
 ```
 #### Descriptions
 1. **consume**
@@ -207,7 +207,7 @@ return Api::consume('graphqlTest')
 
     Its advance method to keep your response on cache with defined cache name and time. It pick default cache Setting from your env
 
-7.  **conversion** method
+7.  **conversion** method [By Default it call **toJson()** method]
     +   **toArray**
     +   **toJson**
     +   **toCollection**
