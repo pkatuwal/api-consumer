@@ -24,4 +24,9 @@ class WithParser
             $this->{$key}=$value;
         }
     }
+
+    public function __get($name)
+    {
+        return $this->requestedHeadersPayload->{$name};
+    }
 }
